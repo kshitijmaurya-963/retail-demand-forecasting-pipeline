@@ -1,120 +1,56 @@
-Retail Demand Forecasting Micro-Pipeline (Classical + ML)
-📌 Project Overview
+# 🛒 Retail Demand Forecasting Pipeline
 
-This project builds a small, end-to-end forecasting pipeline for weekly retail demand.
-It’s designed to feel like a realistic portfolio project: modular, reproducible, and insightful — but not overly perfect.
+An end-to-end **retail demand forecasting micro-pipeline** that compares classical time series models (Naive, Seasonal Naive, SARIMAX) with machine learning (LightGBM).  
+This project demonstrates the workflow of a data scientist: from data ingestion and feature engineering to model training, rolling-origin backtesting, and forecast visualization.
 
-We simulate a dataset of 3 stores × 5 SKUs (~27 months of daily sales) and aggregate to weekly demand.
-The pipeline benchmarks classical methods (Naive, Seasonal Naive, SARIMAX) against a machine learning model (LightGBM).
+---
 
-The goal is:
+## 📌 Project Overview
+- **Dataset**: Synthetic daily store-item sales (~2 years), aggregated weekly.
+- **Feature Engineering**:
+  - Calendar features (week, month, year, holiday flags)
+  - Lags (1, 2, 4 weeks)
+  - Moving averages
+- **Models**:
+  - Baselines: Naive, Seasonal Naive
+  - Classical: SARIMAX
+  - Machine Learning: LightGBM
+- **Evaluation**:
+  - Rolling-origin backtesting (4 folds)
+  - Metrics: Mean Absolute Error (MAE), Mean Absolute Percentage Error (MAPE)
+- **Outputs**:
+  - Metrics CSV reports
+  - Forecast plots per store/SKU
 
-Data ingestion & preprocessing
+---
 
-Feature engineering (calendar, holidays, lags, moving averages)
+## 🛠️ Tech Stack
+- **Core**: Python 3.9+
+- **Libraries**:  
+  `pandas`, `numpy`, `scikit-learn`, `statsmodels`, `lightgbm`, `matplotlib`, `seaborn`
 
-Model comparisons
+---
 
-Rolling-origin backtesting
+## 🚀 How to Run
 
-Error analysis & visualization
+1. **Clone the repo**
+   ```bash
+   git clone https://github.com/yourusername/retail-demand-forecasting-pipeline.git
+   cd retail-demand-forecasting-pipeline
+   
+2. **Create virtual environment & install dependencies**
+   ```bash
+    python -m venv .venv
+    source .venv/bin/activate   # On Windows: .venv\Scripts\activate
+    pip install -r requirements.txt
+   
+3. **Run backtesting**
+   ```bash
+    make backtest
+-Metrics saved in: reports/metrics/
+-Plots saved in: reports/plots/
 
-Forecast generation for future periods
-
-🔍 Why This Approach?
-
-Classical baselines first → to ground expectations (Naive, Seasonal Naive).
-
-SARIMAX → interpretable seasonal model, but not heavily tuned (realistic tradeoff).
-
-LightGBM → handles nonlinear interactions & engineered features better than pure time series models.
-
-Rolling-origin backtest → mimics real deployment (retraining & predicting in steps).
-
-Plots + metrics → numbers give precision, plots give intuition.
-
-This mirrors how a DS would balance rigor with pragmatism.
-
-⚙️ Project Structure
-retail_demand_forecasting_micro_pipeline/
-│
-├── data/                 <- synthetic sales data (CSV)
-├── reports/              <- metrics & plots after runs
-│
-├── src/
-│   ├── data.py           <- data generation & ingestion
-│   ├── features.py       <- feature engineering
-│   ├── models.py         <- forecasting models
-│   ├── backtest.py       <- rolling-origin evaluation
-│   ├── forecast.py       <- final forecast generation
-│
-├── notebooks/
-│   └── EDA.ipynb         <- quick exploratory notebook
-│
-├── requirements.txt
-├── Makefile              <- run backtest/forecast easily
-└── README.md
-
-🚀 How to Run
-
-Setup environment
-
-python -m venv .venv
-source .venv/bin/activate     # (Windows: .venv\Scripts\activate)
-pip install -r requirements.txt
-
-
-Run backtest
-
-make backtest
-
-
-Outputs metrics CSV in reports/
-
-Saves error & forecast plots
-
-Run forecast
-
-make forecast
-
-
-Generates 4-week ahead forecasts
-
-Saves plots per store-SKU
-
-📊 Example Outputs
-
-Metrics (MAE, MAPE) per model
-
-Forecast Plots
-
-Naive vs SARIMAX vs LightGBM
-
-Error distributions
-
-(You can add screenshots here after running locally and saving plots.)
-
-✅ Key Learnings
-
-Baselines are critical: Naive methods often surprisingly competitive.
-
-SARIMAX can struggle with multiple SKUs/stores due to tuning complexity.
-
-LightGBM with engineered features often generalizes better across series.
-
-Rolling-origin evaluation avoids “data leakage” optimism.
-
-🔮 Future Improvements
-
-Hyperparameter tuning (Bayesian optimization / Optuna).
-
-More advanced ML/DL (XGBoost, CatBoost, RNNs, Transformers).
-
-Incorporate price & promotions as external regressors.
-
-Deploy forecasts via REST API or Streamlit dashboard.
-
-👤 Author
-
-Project built as a portfolio case study to demonstrate end-to-end data science workflow:
-from idea → pipeline → models → evaluation → storytelling.
+4. **Run forecasting (final horizon)**
+   ```bash
+   make forecast
+-Forecasts + plots saved in: reports/forecasts/
